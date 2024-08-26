@@ -218,7 +218,8 @@ import UploadFile from './components/UploadFile/index.vue'
       :style="{ width: gridCellWH * gridNumW + 'px', height: gridCellWH * gridNumH + 'px', zIndex: zIndexGrids, marginTop: marginTopGrids + 'px', marginLeft: marginLeftGrids + 'px' }">
       <div v-for="row in gridNumW" :key="row">
         <span>
-          <div class="gridCell" :data-row="column - 1" :data-column="row - 1" v-for="column in gridNumH" :key="column"
+          <div class="gridCell" :id="nameId(column - 1, row - 1)" :data-row="column - 1" :data-column="row - 1"
+            v-for="column in gridNumH" :key="column"
             :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px', opacity: opacityGrids }"
             @contextmenu.prevent="rightBtn($event)" @mouseup="handleMouseUp($event)" @mousedown="handleMouseown($event)"
             @mouseover="handleMouseOver($event)">
@@ -423,11 +424,13 @@ export default {
 
         if (this.mouse2Down && this.group != '') {
           console.log("右键单击添加");
+          console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
           if (this.group in this.addCellD) {
             console.log("key has");
             if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
               console.log("new + " + addL);
               this.addCellD[this.group].push(addL)
+              this.changeBG(el.dataset.row, el.dataset.column, this.addCellD, this.group)
             }
           } else {
             // console.log("添加");
@@ -458,6 +461,15 @@ export default {
       // console.log("index = " + index);
       return index
     },
+    changeBG(row, column, dict, key) {
+      var keys = Array(Object.keys(dict))
+      var colorIdx = keys.indexOf(key)
+      console.log("colorIdx = " + colorIdx)
+      // change div css style
+      var id = row + "+" + column
+      var div = document.getElementById(id);
+      div.style.backgroundColor = 'red';
+    },
     handleMouseOver(e) {
       var el = e.target;
       console.log("e.button = " + e.button);
@@ -466,13 +478,14 @@ export default {
       // console.log("el.dataset.column = " + el.dataset.column);
 
       if (e.button == 0) {
-        console.log("\n左键覆盖移动");
-        console.log("this.mouse2Down = " + this.mouse2Down);
+        // console.log("\n左键覆盖移动");
+        // console.log("this.mouse2Down = " + this.mouse2Down);
         // console.log("this.addCellD = " + this.addCellD);
-        console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+        // console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
 
         if (this.mouse2Down && this.group != '') {
           console.log("右键拖动添加");
+          console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
           var addL = [el.dataset.row, el.dataset.column]
           // console.log("addL = " + addL);
           if (this.group in this.addCellD) {
@@ -480,6 +493,7 @@ export default {
             if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
               console.log("new + " + addL);
               this.addCellD[this.group].push(addL)
+              this.changeBG(el.dataset.row, el.dataset.column, this.addCellD, this.group)
             }
           } else {
             console.log("新建添加");
@@ -493,6 +507,9 @@ export default {
         console.log("右键覆盖移动");
 
       }
+    },
+    nameId(row, column) {
+      return row + "+" + column;
     },
 
 
