@@ -51,6 +51,10 @@ import UploadFile from './components/UploadFile/index.vue'
       &nbsp;&nbsp;&nbsp; Pixel Image=
       <el-input-number v-model="imagePixelWidth" :precision="1" :step="0.1" /> x
       <el-input-number v-model="imagePixelHeight" :precision="1" :step="0.1" />
+
+      &nbsp;&nbsp;&nbsp;Original Ref Image= {{ imageRefWidthPre }} x {{ imageRefHeightPre }}
+      &nbsp;&nbsp;&nbsp;Original Pixel Image= {{ imagePixelWidthPre }} x {{ imagePixelHeightPre }}
+
     </span>
 
     <br>
@@ -96,9 +100,9 @@ import UploadFile from './components/UploadFile/index.vue'
     <hr>
 
     <span>
-      <div class="slider-block">Ref Image Opacity:&nbsp;
+      <div class="slider-block">Ref Image Opacity:&nbsp;&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="opacityRef" show-input :precision="1" :step="0.1" :max="1" />
-        &nbsp;&nbsp;&nbsp;&nbsp;Pixel Image Opacity:
+        &nbsp;&nbsp;&nbsp;&nbsp;Pixel Image Opacity:&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="opacityPixel" show-input :precision="1" :step="0.1" :max="1" />
       </div>
     </span>
@@ -106,10 +110,10 @@ import UploadFile from './components/UploadFile/index.vue'
     <hr>
 
     <span>
-      <div class="slider-block">Ref Margin Top pix:&nbsp;
+      <div class="slider-block">Ref Margin Top pix:&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="marginTopRef" show-input :precision="1" :step="0.1"
           :max="100 * zoomRef" />
-        &nbsp;&nbsp;&nbsp;&nbsp;Ref Margin Left pix:
+        &nbsp;&nbsp;&nbsp;&nbsp;Ref Margin Left pix:&nbsp;&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="marginLeftRef" show-input :precision="1" :step="0.1"
           :max="100 * zoomRef" />
       </div>
@@ -121,7 +125,7 @@ import UploadFile from './components/UploadFile/index.vue'
       <div class="slider-block">Pixel Margin Top pix:
         <el-slider class="self_slider" v-model="marginTopPixel" show-input :precision="1" :step="0.1"
           :max="100 * zoomPixel" />
-        &nbsp;&nbsp;&nbsp;&nbsp;Pixel Margin Left pix:
+        &nbsp;&nbsp;&nbsp;&nbsp;Pixel Margin Left pix:&nbsp;
         <el-slider class="self_slider" v-model="marginLeftPixel" show-input :precision="1" :step="0.1"
           :max="100 * zoomPixel" />
       </div>
@@ -129,13 +133,69 @@ import UploadFile from './components/UploadFile/index.vue'
 
     <hr>
 
+    <span>
+      Pixel Image Up =
+      <el-switch v-model="PixelUp" @change="upImageRef" />
+      &nbsp;&nbsp;&nbsp; Ref Image Up =
+      <el-switch v-model="RefUp" @change="upImagePixel" />
+      &nbsp;&nbsp;&nbsp; Show Grids Box =
+      <el-switch v-model="showGirdsBox1" @change="changeGirdsBox" />
+    </span>
+
+    <hr>
 
     <span>
-      Ref Image Up=
-      <el-switch v-model="PixelUp" @change="upImageRef" />
-      &nbsp;&nbsp;&nbsp; Pixel Image Up=
-      <el-switch v-model="RefUp" @change="upImagePixel" />
+      <div class="slider-block">
+        Grid Cell WH (x0.1) =
+        <el-slider v-model="gridCellWH" class="el-slider-zoom-grid" :precision="1" :step="0.1" :min="1"
+          :max="30 * zoomPixel" @change="changGrids" />
+        &nbsp;&nbsp;&nbsp; Grid Cell WH (x1) =
+        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="1" @change="changGrids"
+          :max="30 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Grid Cell WH (x0.01):&nbsp;
+        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="0.01" @change="changGrids"
+          :max="30 * zoomPixel" />
+      </div>
+
+      <div class="slider-block">
+        Cells W = &nbsp; <el-input-number v-model="gridNumW" :precision="0" :step="1" :min="1" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Cells H = &nbsp; <el-input-number v-model="gridNumH" :precision="0" :step="1" :min="1" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Pixel Image Opacity = <el-slider class="self_slider" v-model="opacityGrids" show-input :precision="1"
+          :step="0.1" :max="1" />
+      </div>
     </span>
+
+    <hr>
+
+    <span>
+      <div class="slider-block">
+        Grid Margin Top pix (x1) =
+        <el-slider v-model="marginTopGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="1"
+          :max="100 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp; Top pix (x1) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="marginTopGrids" :min="0" :step="1"
+          :max="100 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Top pix (x0.01) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="marginTopGrids" :min="0" :step="0.01"
+          :max="100 * zoomPixel" />
+      </div>
+
+      <div class="slider-block">
+        Grid Margin Left pix (x1) =
+        <el-slider v-model="marginLeftGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="1"
+          :max="100 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp; Left pix (x1) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="marginLeftGrids" :min="0" :step="1"
+          :max="100 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Left pix (x0.01) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="marginLeftGrids" :min="0" :step="0.01"
+          :max="100 * zoomPixel" />
+      </div>
+    </span>
+
+
 
     <hr class="bigHr">
 
@@ -151,11 +211,9 @@ import UploadFile from './components/UploadFile/index.vue'
       :style="{ width: imagePixelWidth + 'px', height: imagePixelHeight + 'px', opacity: opacityPixel, zIndex: zIndexPixel, marginTop: marginTopPixel + 'px', marginLeft: marginLeftPixel + 'px' }"
       :src=imageDataPixel alt="Pixel Image" />
 
-
-
-    <br>
-    <br>
-    <br>
+    <div v-if="showGirdsBox" class="gridsBox"
+      :style="{ width: gridCellWH * gridNumW + 'px', height: gridCellWH * gridNumH + 'px', opacity: opacityGrids, zIndex: zIndexGrids, marginTop: marginTopGrids + 'px', marginLeft: marginLeftGrids + 'px' }">
+    </div>
 
 
     <el-button @click="addItem" type="primary">Add</el-button>
@@ -225,19 +283,28 @@ export default {
       imagePixelWidthPre: 0,
       imagePixelHeight: 0,
       imagePixelHeightPre: 0,
-      opacityRef: 1,
+      gridCellWH: 0,
+      gridNumW: 0,
+      gridNumH: 0,
+      opacityRef: 0.5,
       opacityPixel: 1,
+      opacityGrids: 1,
       zoomRef: 1,
       zoomPixel: 1,
       zoomSlider: 1.5,
-      RefUp: false,
-      PixelUp: true,
-      zIndexRef: 1,
-      zIndexPixel: 2,
+      RefUp: true,
+      PixelUp: false,
+      showGirdsBox: false,
+      showGirdsBox1: false,
+      zIndexRef: 2,
+      zIndexPixel: 1,
+      zIndexGrids: 3,
       marginTopRef: 0,
       marginLeftRef: 0,
       marginTopPixel: 0,
       marginLeftPixel: 0,
+      marginTopGrids: 0,
+      marginLeftGrids: 0,
       file1: "",
       file2: "",
       show: true,
@@ -312,12 +379,18 @@ export default {
       }
     },
     changZoomRef() {
-      this.imageRefWidth = this.imageRefWidthPre * this.zoomRef
-      this.imageRefHeight = this.imageRefHeightPre * this.zoomRef
+      this.imageRefWidth = this.imageRefWidthPre * this.zoomRef;
+      this.imageRefHeight = this.imageRefHeightPre * this.zoomRef;
     },
     changeZoomPixel() {
-      this.imagePixelWidth = this.imagePixelWidthPre * this.zoomPixel
-      this.imagePixelHeight = this.imagePixelHeightPre * this.zoomPixel
+      this.imagePixelWidth = this.imagePixelWidthPre * this.zoomPixel;
+      this.imagePixelHeight = this.imagePixelHeightPre * this.zoomPixel;
+    },
+    changeGirdsBox() {
+      this.showGirdsBox = !this.showGirdsBox;
+    },
+    changGrids() {
+      this.showGirdsBox
     }
   }
 };
@@ -399,10 +472,31 @@ hr {
   width: 300px;
 }
 
-.self_slider {
+.el-slider-zoom-grid {
+  margin-top: 0;
+  margin-left: 20px;
+  width: 350px;
+}
+
+.el-slider-zoom-grid-pix {
   margin-top: 0;
   margin-left: 20px;
   width: 500px;
+}
+
+.self_slider {
+  margin-top: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 500px;
+}
+
+.gridsBox {
+  width: 100%;
+  height: 500px;
+  /* background: rgba(0, 255, 98, 0.826); */
+  background: rgba(0, 255, 98, 0.333);
+  z-index: 3;
 }
 
 /* ================================= */
