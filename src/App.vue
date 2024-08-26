@@ -401,6 +401,22 @@ export default {
     handleMouseown(e) {
       if (e.button == 0) {
         console.log("左键按下");
+        console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+        if (!this.mouse2Down) {
+          var el = e.target;
+          var addL = [el.dataset.row, el.dataset.column]
+          console.log("addL = " + addL);
+          for (var group in this.addCellD) {
+            if (this.array2DHas2D(this.addCellD[group], addL)) {
+              const index = this.getA1DIdxInA2D(this.addCellD[group], addL);
+              console.log("index = " + index);
+              if (index !== -1) {
+                this.addCellD[group].splice(index, 1);
+              }
+              break
+            }
+          }
+        }
 
       } else if (e.button == 1) {
         console.log("滚轮按下");
@@ -424,6 +440,14 @@ export default {
           }
         }
       }
+    },
+    getA1DIdxInA2D(a2d, a1d) {
+      const index = a2d.findIndex(subArray =>
+        subArray.length === a1d.length &&
+        subArray.every((value, i) => value === a1d[i])
+      );
+      // console.log("index = " + index);
+      return index
     },
     handleMouseOver(e) {
       var el = e.target;
@@ -453,8 +477,6 @@ export default {
             console.log("添加");
             this.addCellD[this.group] = []
           }
-
-
         }
 
       } else if (e.button == 1) {
