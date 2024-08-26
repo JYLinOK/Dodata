@@ -75,7 +75,7 @@ import UploadFile from './components/UploadFile/index.vue'
       <div class="slider-block">Ref Image width:&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="imageRefWidth" show-input :precision="1" :step="1"
           :max="imageRefWidthPre * zoomRef * zoomSlider" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ref Image height:&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ref Image height:&nbsp;&nbsp;&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="imageRefHeight" show-input :precision="1" :step="1"
           :max="imageRefHeightPre * zoomRef * zoomSlider" />
       </div>
@@ -96,9 +96,9 @@ import UploadFile from './components/UploadFile/index.vue'
     <hr>
 
     <span>
-      <div class="slider-block">Ref Image Opacity:
+      <div class="slider-block">Ref Image Opacity:&nbsp;
         <el-slider class="self_slider" v-model="opacityRef" show-input :precision="1" :step="0.1" :max="1" />
-        &nbsp;&nbsp;&nbsp;&nbsp;Pixel Image Opacity:&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;Pixel Image Opacity:
         <el-slider class="self_slider" v-model="opacityPixel" show-input :precision="1" :step="0.1" :max="1" />
       </div>
     </span>
@@ -106,7 +106,7 @@ import UploadFile from './components/UploadFile/index.vue'
     <hr>
 
     <span>
-      <div class="slider-block">Ref Margin Top pix:&nbsp;&nbsp;
+      <div class="slider-block">Ref Margin Top pix:&nbsp;
         <el-slider class="self_slider" v-model="marginTopRef" show-input :precision="1" :step="0.1"
           :max="100 * zoomRef" />
         &nbsp;&nbsp;&nbsp;&nbsp;Ref Margin Left pix:
@@ -131,10 +131,10 @@ import UploadFile from './components/UploadFile/index.vue'
 
 
     <span>
-      Pixel Image Up=
-      <el-switch v-model="refUp" @change="upImageRef" />
-      &nbsp;&nbsp;&nbsp; Ref Image Up=
-      <el-switch v-model="PixelUp" @change="upImagePixel" />
+      Ref Image Up=
+      <el-switch v-model="PixelUp" @change="upImageRef" />
+      &nbsp;&nbsp;&nbsp; Pixel Image Up=
+      <el-switch v-model="RefUp" @change="upImagePixel" />
     </span>
 
     <hr class="bigHr">
@@ -230,7 +230,7 @@ export default {
       zoomRef: 1,
       zoomPixel: 1,
       zoomSlider: 1.5,
-      refUp: false,
+      RefUp: false,
       PixelUp: true,
       zIndexRef: 1,
       zIndexPixel: 2,
@@ -293,11 +293,13 @@ export default {
       this.imagePixelHeightPre = height
     },
     upImageRef() {
-      this.PixelUp = !this.refUp;
+      this.RefUp = !this.PixelUp;
+      this.PixelUp = !this.RefUp;
       this.zIndexUp();
     },
     upImagePixel() {
-      this.refUp = !this.PixelUp;
+      this.PixelUp = !this.RefUp;
+      this.RefUp = !this.PixelUp;
       this.zIndexUp();
     },
     zIndexUp() {
