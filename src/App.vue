@@ -58,13 +58,15 @@ import UploadFile from './components/UploadFile/index.vue'
     <span>
       Ref zoom:
       <div class="slider-block">
-        <el-slider class="self_slider" v-model="zoomRef" show-input :precision="1" :step="1" :min="1" :max="10" />
+        <el-slider class="self_slider" v-model="zoomRef" show-input :precision="1" :step="1" :min="1" :max="10"
+          @change="changZoomRef" />
       </div>
     </span>
     <span>
       Pixel zoom:
       <div class="slider-block">
-        <el-slider class="self_slider" v-model="zoomPixel" show-input :precision="1" :step="1" :min="1" :max="10" />
+        <el-slider class="self_slider" v-model="zoomPixel" show-input :precision="1" :step="1" :min="1" :max="10"
+          @change="changeZoomPixel" />
       </div>
     </span>
 
@@ -130,7 +132,6 @@ import UploadFile from './components/UploadFile/index.vue'
     <img v-if=imageDataPixel class="imgBoxPixel"
       :style="{ width: imagePixelWidth + 'px', height: imagePixelHeight + 'px', opacity: opacityPixel, zIndex: zIndexPixel }"
       :src=imageDataPixel alt="Pixel Image" />
-
 
 
 
@@ -284,6 +285,14 @@ export default {
         this.zIndexRef = 1;
         this.zIndexPixel = 2;
       }
+    },
+    changZoomRef() {
+      this.imageRefWidth = this.imageRefWidth * this.zoomRef
+      this.imageRefHeight = this.imageRefHeight * this.zoomRef
+    },
+    changeZoomPixel() {
+      this.imagePixelWidth = this.imagePixelWidth * this.zoomPixel
+      this.imagePixelHeight = this.imagePixelHeight * this.zoomPixel
     }
   }
 };
