@@ -230,10 +230,6 @@ import UploadFile from './components/UploadFile/index.vue'
     </div>
 
 
-
-
-
-
   </div>
 
 </template>
@@ -399,12 +395,12 @@ export default {
       }
     },
     handleMouseown(e) {
+      var el = e.target;
+      var addL = [el.dataset.row, el.dataset.column]
       if (e.button == 0) {
         console.log("左键按下");
         console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
         if (!this.mouse2Down) {
-          var el = e.target;
-          var addL = [el.dataset.row, el.dataset.column]
           console.log("addL = " + addL);
           for (var group in this.addCellD) {
             if (this.array2DHas2D(this.addCellD[group], addL)) {
@@ -417,7 +413,6 @@ export default {
             }
           }
         }
-
       } else if (e.button == 1) {
         console.log("滚轮按下");
       } else if (e.button == 2) {
@@ -425,6 +420,19 @@ export default {
         console.log("this.mouse2Down = " + this.mouse2Down);
         this.mouse2Down = true;
 
+        if (this.mouse2Down && this.group != '') {
+          console.log("右键单击添加");
+          if (this.group in this.addCellD) {
+            console.log("key has");
+            if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
+              console.log("new + " + addL);
+              this.addCellD[this.group].push(addL)
+            }
+          } else {
+            // console.log("添加");
+            this.addCellD[this.group] = []
+          }
+        }
       }
     },
     array2DHas2D(a2D, a1D) {
@@ -459,14 +467,13 @@ export default {
       if (e.button == 0) {
         console.log("\n左键覆盖移动");
         console.log("this.mouse2Down = " + this.mouse2Down);
-        console.log("this.addCellD = " + this.addCellD);
+        // console.log("this.addCellD = " + this.addCellD);
         console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
 
         if (this.mouse2Down && this.group != '') {
-          console.log("进入");
+          console.log("右键拖动添加");
           var addL = [el.dataset.row, el.dataset.column]
-          console.log("addL = " + addL);
-
+          // console.log("addL = " + addL);
           if (this.group in this.addCellD) {
             console.log("key has");
             if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
@@ -474,7 +481,7 @@ export default {
               this.addCellD[this.group].push(addL)
             }
           } else {
-            console.log("添加");
+            console.log("新建添加");
             this.addCellD[this.group] = []
           }
         }
