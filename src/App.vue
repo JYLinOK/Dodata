@@ -216,9 +216,7 @@ import UploadFile from './components/UploadFile/index.vue'
 
     <div v-if="showGirdsBox" class="gridsBox"
       :style="{ width: gridCellWH * gridNumW + 'px', height: gridCellWH * gridNumH + 'px', zIndex: zIndexGrids, marginTop: marginTopGrids + 'px', marginLeft: marginLeftGrids + 'px' }">
-
       <div v-for="row in gridNumW" :key="row">
-        <!-- <div v-for="row in 1" :key="row"> -->
         <span>
           <div class="gridCell" :data-row="column - 1" :data-column="row - 1" v-for="column in gridNumH" :key="column"
             :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px', opacity: opacityGrids }"
@@ -229,6 +227,9 @@ import UploadFile from './components/UploadFile/index.vue'
       </div>
     </div>
 
+    <div class="gridCellBottom"></div>
+
+    <br>
 
   </div>
 
@@ -603,6 +604,13 @@ hr {
   background: rgba(0, 255, 98, 0.222);
   display: flex;
   flex-direction: row;
+}
+
+.gridCellBottom {
+  width: 100%;
+  height: 1000px;
+  margin-bottom: 1px;
+  /* background: rgb(255, 0, 0); */
 }
 
 .gridCell {
