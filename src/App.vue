@@ -194,14 +194,21 @@ import UploadFile from './components/UploadFile/index.vue'
     </span>
 
     <hr class="bigHr">
-    <br>
-    <br>
-    <br>
+    <span>
+      <el-button @click="handleBtnAddBlock" type="primary">Add</el-button>
+      block name = <el-input v-model="group" style="width: 100px" placeholder="BlockName" />
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      color = <el-color-picker v-model="colorBG" />
+    </span>
+
+    <div class="blockBox" :id="nameIDBlock(block)" v-for="(block, i) in blocks" :style="{ background: blockColors[i] }"
+      :key="block">
+      block name = {{ blocks[i] }} &nbsp;&nbsp;&nbsp; color = {{ blockColors[i] }} &nbsp;&nbsp;&nbsp; data = {{
+        addCellD[blocks[i]] }}
+    </div>
 
 
     <hr class="bigHr">
-
-
     <br>
     <br>
     <br>
@@ -220,7 +227,7 @@ import UploadFile from './components/UploadFile/index.vue'
         <span>
           <div class="gridCell" :id="nameId(column - 1, row - 1)" :data-row="column - 1" :data-column="row - 1"
             v-for="column in gridNumH" :key="column"
-            :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px', opacity: opacityGrids }"
+            :style="{ color: 'white', width: gridCellWH + 'px', height: gridCellWH + 'px', opacity: opacityGrids }"
             @contextmenu.prevent="rightBtn($event)" @mouseup="handleMouseUp($event)" @mousedown="handleMouseown($event)"
             @mouseover="handleMouseOver($event)">
           </div>
@@ -237,11 +244,14 @@ import UploadFile from './components/UploadFile/index.vue'
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
   components: {
     UploadFile
   },
   name: 'App',
+
   data() {
     return {
       imageData: null,
@@ -282,27 +292,11 @@ export default {
       mouse2Down: false,
       btnWidth: 10,
       addCellD: {},
-      group: 'group',
-      form: {
-        dynamicItem: [
-          'btn1',
-          'btn2',
-          'btn3',
-          'btn4',
-          'btn5',
-          'btn5',
-          'btn5',
-          'btn5',
-          'btn5',
-          'btn5',
-          // 'btn6',
-          // 'btn7',
-          // 'btn8',
-          // 'btn9'
-        ],
-        rows: 1,
-        colums: 10,
-      }
+      group: '',
+      colorBG: ref('#FF5500'),
+      colorBGPre: '#00ffbf20',
+      blocks: [],
+      blockColors: []
     };
   },
   methods: {
@@ -410,6 +404,7 @@ export default {
               console.log("index = " + index);
               if (index !== -1) {
                 this.addCellD[group].splice(index, 1);
+                this.resetBG(el.dataset.row, el.dataset.column)
               }
               break
             }
@@ -430,7 +425,7 @@ export default {
             if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
               console.log("new + " + addL);
               this.addCellD[this.group].push(addL)
-              this.changeBG(el.dataset.row, el.dataset.column, this.addCellD, this.group)
+              this.changeBG(el.dataset.row, el.dataset.column)
             }
           } else {
             // console.log("添加");
@@ -461,14 +456,17 @@ export default {
       // console.log("index = " + index);
       return index
     },
-    changeBG(row, column, dict, key) {
-      var keys = Array(Object.keys(dict))
-      var colorIdx = keys.indexOf(key)
-      console.log("colorIdx = " + colorIdx)
+    changeBG(row, column) {
       // change div css style
       var id = row + "+" + column
       var div = document.getElementById(id);
-      div.style.backgroundColor = 'red';
+      div.style.backgroundColor = this.colorBG;
+    },
+    resetBG(row, column) {
+      // change div css style
+      var id = row + "+" + column
+      var div = document.getElementById(id);
+      div.style.backgroundColor = this.colorBGPre;
     },
     handleMouseOver(e) {
       var el = e.target;
@@ -493,7 +491,7 @@ export default {
             if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
               console.log("new + " + addL);
               this.addCellD[this.group].push(addL)
-              this.changeBG(el.dataset.row, el.dataset.column, this.addCellD, this.group)
+              this.changeBG(el.dataset.row, el.dataset.column)
             }
           } else {
             console.log("新建添加");
@@ -511,8 +509,14 @@ export default {
     nameId(row, column) {
       return row + "+" + column;
     },
-
-
+    nameIDBlock(block) {
+      // console.log("block = " + block);
+      return "block" + "+" + block;
+    },
+    handleBtnAddBlock() {
+      this.blocks.push(this.group);
+      this.blockColors.push(this.colorBG);
+    }
 
   }
 };
@@ -546,7 +550,7 @@ export default {
 .canvas {
   width: 200px;
   height: 100px;
-  background: rgba(147, 223, 209, 0.342);
+  background: #00ffbf20;
 }
 
 .imgBoxRef {
@@ -640,6 +644,12 @@ hr {
 
 .gridCell:hover {
   background: rgb(1, 255, 213);
+}
+
+.blockBox {
+  background: rgb(222, 222, 233);
+  margin-top: 10px;
+  padding: 5px;
 }
 
 /* ================================= */
