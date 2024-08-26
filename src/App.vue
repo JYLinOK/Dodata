@@ -193,9 +193,14 @@ import UploadFile from './components/UploadFile/index.vue'
       </div>
     </span>
 
+    <hr class="bigHr">
+    <br>
+    <br>
+    <br>
 
 
     <hr class="bigHr">
+
 
     <br>
     <br>
@@ -217,7 +222,8 @@ import UploadFile from './components/UploadFile/index.vue'
         <span>
           <div class="gridCell" :data-row="column - 1" :data-column="row - 1" v-for="column in gridNumH" :key="column"
             :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px', opacity: opacityGrids }"
-            @contextmenu.prevent="addCell($event)">
+            @contextmenu.prevent="addCell($event)" @mouseup="handleMouseUp($event)" @mousedown="handleMouseown($event)"
+            @mouseover="handleMouseOver($event)">
           </div>
         </span>
       </div>
@@ -398,13 +404,46 @@ export default {
       console.log("el.dataset = " + el.dataset);
       console.log("el.dataset.row = " + el.dataset.row);
       console.log("el.dataset.column = " + el.dataset.column);
-
-      this.left = e.clientX
-      this.top = e.clientY
-
-      this.visible = true
-
     },
+    handleMouse(e) {
+      if (e.button == 0) {
+        console.log("点击左键");
+      } else if (e.button == 1) {
+        console.log("点击滚轮");
+      } else if (e.button == 2) {
+        console.log("点击右键");
+      }
+    },
+    handleMouseUp(e) {
+      if (e.button == 0) {
+        console.log("左键释放");
+      } else if (e.button == 1) {
+        console.log("滚轮释放");
+      } else if (e.button == 2) {
+        console.log("右键释放");
+      }
+    },
+    handleMouseown(e) {
+      if (e.button == 0) {
+        console.log("左键按下");
+      } else if (e.button == 1) {
+        console.log("滚轮按下");
+      } else if (e.button == 2) {
+        console.log("右键按下");
+      }
+    },
+    handleMouseOver(e) {
+      if (e.button == 0) {
+        console.log("左键覆盖移动");
+      } else if (e.button == 1) {
+        console.log("滚轮覆盖移动");
+      } else if (e.button == 2) {
+        console.log("右键覆盖移动");
+      }
+    },
+
+
+
   }
 };
 </script>
