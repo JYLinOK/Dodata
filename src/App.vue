@@ -74,10 +74,10 @@ import UploadFile from './components/UploadFile/index.vue'
     <span>
       <div class="slider-block">Ref Image width:&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="imageRefWidth" show-input :precision="1" :step="1"
-          :max="imageRefWidthPre * zoomRef" />
+          :max="imageRefWidthPre * zoomRef * zoomSlider" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ref Image height:&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="imageRefHeight" show-input :precision="1" :step="1"
-          :max="imageRefHeightPre * zoomRef" />
+          :max="imageRefHeightPre * zoomRef * zoomSlider" />
       </div>
     </span>
 
@@ -86,10 +86,10 @@ import UploadFile from './components/UploadFile/index.vue'
     <span>
       <div class="slider-block">Pixel Image width:
         <el-slider class="self_slider" v-model="imagePixelWidth" show-input :precision="1" :step="0.1"
-          :max="imagePixelWidthPre * zoomPixel" />
+          :max="imagePixelWidthPre * zoomPixel * zoomSlider" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pixel Image height:&nbsp;&nbsp;
         <el-slider class="self_slider" v-model="imagePixelHeight" show-input :precision="1" :step="0.1"
-          :max="imagePixelHeightPre * zoomPixel" />
+          :max="imagePixelHeightPre * zoomPixel * zoomSlider" />
       </div>
     </span>
 
@@ -229,6 +229,7 @@ export default {
       opacityPixel: 1,
       zoomRef: 1,
       zoomPixel: 1,
+      zoomSlider: 1.5,
       refUp: false,
       PixelUp: true,
       zIndexRef: 1,
@@ -387,7 +388,7 @@ hr {
 
 
 .slider-input-number {
-  width: 100px;
+  width: 130px;
 }
 
 .el-slider-zoom {
