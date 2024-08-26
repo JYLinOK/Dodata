@@ -146,11 +146,11 @@ import UploadFile from './components/UploadFile/index.vue'
 
     <span>
       <div class="slider-block">
-        Grid Cell WH (x0.1) =
-        <el-slider v-model="gridCellWH" class="el-slider-zoom-grid" :precision="1" :step="0.1" :min="1"
+        Grid Cell WH (x1) =
+        <el-slider v-model="gridCellWH" class="el-slider-zoom-grid" :precision="1" :step="1" :min="1"
           :max="30 * zoomPixel" />
-        &nbsp;&nbsp;&nbsp; Grid Cell WH (x1) = &nbsp;
-        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="1" :max="30 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp; Grid Cell WH (x0.1) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="0.1" :max="30 * zoomPixel" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Grid Cell WH (x0.01) = &nbsp;
         <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="0.01" :max="30 * zoomPixel" />
       </div>
@@ -170,10 +170,10 @@ import UploadFile from './components/UploadFile/index.vue'
     <span>
       <div class="slider-block">
         Grid Margin Top pix (x1) =
-        <el-slider v-model="marginTopGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="0"
+        <el-slider v-model="marginTopGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="1" :min="0"
           :max="200 * zoomPixel" />
-        &nbsp;&nbsp;&nbsp; Top pix (x1) = &nbsp;
-        <el-input-number class="slider-input-number" v-model="marginTopGrids" :min="0" :step="1"
+        &nbsp;&nbsp;&nbsp; Top pix (x0.1) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="marginTopGrids" :min="0" :step="0.1"
           :max="200 * zoomPixel" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Top pix (x0.01) = &nbsp;
         <el-input-number class="slider-input-number" v-model="marginTopGrids" :min="0" :step="0.01"
@@ -182,10 +182,10 @@ import UploadFile from './components/UploadFile/index.vue'
 
       <div class="slider-block">
         Grid Margin Left pix (x1) =
-        <el-slider v-model="marginLeftGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="0"
+        <el-slider v-model="marginLeftGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="1" :min="0"
           :max="200 * zoomPixel" />
-        &nbsp;&nbsp;&nbsp; Left pix (x1) = &nbsp;
-        <el-input-number class="slider-input-number" v-model="marginLeftGrids" :min="0" :step="1"
+        &nbsp;&nbsp;&nbsp; Left pix (x0.1) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="marginLeftGrids" :min="0" :step="0.1"
           :max="200 * zoomPixel" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Left pix (x0.01) = &nbsp;
         <el-input-number class="slider-input-number" v-model="marginLeftGrids" :min="0" :step="0.01"
@@ -211,8 +211,23 @@ import UploadFile from './components/UploadFile/index.vue'
 
     <div v-if="showGirdsBox" class="gridsBox"
       :style="{ width: gridCellWH * gridNumW + 'px', height: gridCellWH * gridNumH + 'px', opacity: opacityGrids, zIndex: zIndexGrids, marginTop: marginTopGrids + 'px', marginLeft: marginLeftGrids + 'px' }">
+
+      <span>
+        <div v-for="row in gridNumH" :key="row">
+          <span>
+            <div class="gridCell" v-for="column in gridNumW" :key="column"
+              :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px' }" type="primary">
+            </div>
+          </span>
+        </div>
+      </span>
     </div>
 
+
+    <br>
+    <br>
+    <br>
+    <br>
 
     <el-button @click="addItem" type="primary">Add</el-button>
     <br>
@@ -493,6 +508,17 @@ hr {
   height: 500px;
   /* background: rgba(0, 255, 98, 0.826); */
   background: rgba(0, 255, 98, 0.888);
+}
+
+.gridCell {
+  flex-direction: row;
+  /* width: 5px;
+  height: 5px; */
+  background: red;
+}
+
+.gridCell:hover {
+  background: rgb(1, 255, 213);
 }
 
 /* ================================= */
