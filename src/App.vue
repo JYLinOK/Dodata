@@ -148,13 +148,11 @@ import UploadFile from './components/UploadFile/index.vue'
       <div class="slider-block">
         Grid Cell WH (x0.1) =
         <el-slider v-model="gridCellWH" class="el-slider-zoom-grid" :precision="1" :step="0.1" :min="1"
-          :max="30 * zoomPixel" @change="changGrids" />
-        &nbsp;&nbsp;&nbsp; Grid Cell WH (x1) =
-        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="1" @change="changGrids"
           :max="30 * zoomPixel" />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Grid Cell WH (x0.01):&nbsp;
-        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="0.01" @change="changGrids"
-          :max="30 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp; Grid Cell WH (x1) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="1" :max="30 * zoomPixel" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Grid Cell WH (x0.01) = &nbsp;
+        <el-input-number class="slider-input-number" v-model="gridCellWH" :min="0" :step="0.01" :max="30 * zoomPixel" />
       </div>
 
       <div class="slider-block">
@@ -162,8 +160,8 @@ import UploadFile from './components/UploadFile/index.vue'
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Cells H = &nbsp; <el-input-number v-model="gridNumH" :precision="0" :step="1" :min="1" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        Pixel Image Opacity = <el-slider class="self_slider" v-model="opacityGrids" show-input :precision="1"
-          :step="0.1" :max="1" />
+        Grid Cell Opacity = <el-slider class="self_slider" v-model="opacityGrids" show-input :precision="1" :step="0.1"
+          :max="1" />
       </div>
     </span>
 
@@ -172,26 +170,26 @@ import UploadFile from './components/UploadFile/index.vue'
     <span>
       <div class="slider-block">
         Grid Margin Top pix (x1) =
-        <el-slider v-model="marginTopGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="1"
-          :max="100 * zoomPixel" />
+        <el-slider v-model="marginTopGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="0"
+          :max="200 * zoomPixel" />
         &nbsp;&nbsp;&nbsp; Top pix (x1) = &nbsp;
         <el-input-number class="slider-input-number" v-model="marginTopGrids" :min="0" :step="1"
-          :max="100 * zoomPixel" />
+          :max="200 * zoomPixel" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Top pix (x0.01) = &nbsp;
         <el-input-number class="slider-input-number" v-model="marginTopGrids" :min="0" :step="0.01"
-          :max="100 * zoomPixel" />
+          :max="200 * zoomPixel" />
       </div>
 
       <div class="slider-block">
         Grid Margin Left pix (x1) =
-        <el-slider v-model="marginLeftGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="1"
-          :max="100 * zoomPixel" />
+        <el-slider v-model="marginLeftGrids" class="el-slider-zoom-grid-pix" :precision="1" :step="0.1" :min="0"
+          :max="200 * zoomPixel" />
         &nbsp;&nbsp;&nbsp; Left pix (x1) = &nbsp;
         <el-input-number class="slider-input-number" v-model="marginLeftGrids" :min="0" :step="1"
-          :max="100 * zoomPixel" />
+          :max="200 * zoomPixel" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Left pix (x0.01) = &nbsp;
         <el-input-number class="slider-input-number" v-model="marginLeftGrids" :min="0" :step="0.01"
-          :max="100 * zoomPixel" />
+          :max="200 * zoomPixel" />
       </div>
     </span>
 
@@ -288,7 +286,7 @@ export default {
       gridNumH: 0,
       opacityRef: 0.5,
       opacityPixel: 1,
-      opacityGrids: 1,
+      opacityGrids: 0.5,
       zoomRef: 1,
       zoomPixel: 1,
       zoomSlider: 1.5,
@@ -388,9 +386,7 @@ export default {
     },
     changeGirdsBox() {
       this.showGirdsBox = !this.showGirdsBox;
-    },
-    changGrids() {
-      this.showGirdsBox
+      this.zIndexGrids = 3;
     }
   }
 };
@@ -492,11 +488,11 @@ hr {
 }
 
 .gridsBox {
+  position: absolute;
   width: 100%;
   height: 500px;
   /* background: rgba(0, 255, 98, 0.826); */
-  background: rgba(0, 255, 98, 0.333);
-  z-index: 3;
+  background: rgba(0, 255, 98, 0.888);
 }
 
 /* ================================= */
