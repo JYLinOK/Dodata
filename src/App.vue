@@ -210,39 +210,24 @@ import UploadFile from './components/UploadFile/index.vue'
       :src=imageDataPixel alt="Pixel Image" />
 
     <div v-if="showGirdsBox" class="gridsBox"
-      :style="{ width: gridCellWH * gridNumW + 'px', height: gridCellWH * gridNumH + 'px', opacity: opacityGrids, zIndex: zIndexGrids, marginTop: marginTopGrids + 'px', marginLeft: marginLeftGrids + 'px' }">
+      :style="{ width: gridCellWH * gridNumW + 'px', height: gridCellWH * gridNumH + 'px', zIndex: zIndexGrids, marginTop: marginTopGrids + 'px', marginLeft: marginLeftGrids + 'px' }">
 
-      <span>
-        <div v-for="row in gridNumH" :key="row">
-          <span>
-            <div class="gridCell" v-for="column in gridNumW" :key="column"
-              :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px' }" type="primary">
-            </div>
-          </span>
-        </div>
-      </span>
-    </div>
-
-
-    <br>
-    <br>
-    <br>
-    <br>
-
-    <el-button @click="addItem" type="primary">Add</el-button>
-    <br>
-    <br>
-
-    <div class="canvas">
-      <div v-for="row in form.rows" :key="row">
+      <div v-for="row in gridNumW" :key="row">
+        <!-- <div v-for="row in 1" :key="row"> -->
         <span>
-          <!-- <div v-for="(item, index) in form.dynamicItem" :key="index"> -->
-          <el-button v-for="(item, index) in form.dynamicItem" :key="index" v-bind:style="{ width: btnWidth + 'px' }"
-            type="primary">{{ item }}</el-button>
-          <!-- </div> -->
+          <div class="gridCell" :data-row="column - 1" :data-column="row - 1" v-for="column in gridNumH" :key="column"
+            :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px', opacity: opacityGrids }"
+            @contextmenu.prevent="addCell($event)">
+          </div>
         </span>
       </div>
     </div>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
 
 
     <br>
@@ -402,7 +387,24 @@ export default {
     changeGirdsBox() {
       this.showGirdsBox = !this.showGirdsBox;
       this.zIndexGrids = 3;
-    }
+    },
+    addCell(e) {
+      console.log("e = " + e);
+      console.log("e.clientX = " + e.clientX);
+      console.log("e.clientY = " + e.clientY);
+      // var el = e.currentTarget;
+      var el = e.target;
+      console.log("el = " + el);
+      console.log("el.dataset = " + el.dataset);
+      console.log("el.dataset.row = " + el.dataset.row);
+      console.log("el.dataset.column = " + el.dataset.column);
+
+      this.left = e.clientX
+      this.top = e.clientY
+
+      this.visible = true
+
+    },
   }
 };
 </script>
@@ -507,14 +509,17 @@ hr {
   width: 100%;
   height: 500px;
   /* background: rgba(0, 255, 98, 0.826); */
-  background: rgba(0, 255, 98, 0.888);
+  background: rgba(0, 255, 98, 0.222);
+  display: flex;
+  flex-direction: row;
 }
 
 .gridCell {
-  flex-direction: row;
+  position: relative;
+  /* flex-direction: column; */
   /* width: 5px;
   height: 5px; */
-  background: red;
+  /* background: rgb(255, 0, 0); */
 }
 
 .gridCell:hover {
