@@ -222,7 +222,7 @@ import UploadFile from './components/UploadFile/index.vue'
         <span>
           <div class="gridCell" :data-row="column - 1" :data-column="row - 1" v-for="column in gridNumH" :key="column"
             :style="{ width: gridCellWH + 'px', height: gridCellWH + 'px', opacity: opacityGrids }"
-            @contextmenu.prevent="addCell($event)" @mouseup="handleMouseUp($event)" @mousedown="handleMouseown($event)"
+            @contextmenu.prevent="rightBtn($event)" @mouseup="handleMouseUp($event)" @mousedown="handleMouseown($event)"
             @mouseover="handleMouseOver($event)">
           </div>
         </span>
@@ -230,38 +230,7 @@ import UploadFile from './components/UploadFile/index.vue'
     </div>
 
 
-    <br>
-    <br>
-    <br>
-    <br>
 
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
 
 
 
@@ -312,7 +281,10 @@ export default {
       file1: "",
       file2: "",
       show: true,
+      mouse2Down: false,
       btnWidth: 10,
+      addCellD: {},
+      group: 'group',
       form: {
         dynamicItem: [
           'btn1',
@@ -394,16 +366,17 @@ export default {
       this.showGirdsBox = !this.showGirdsBox;
       this.zIndexGrids = 3;
     },
-    addCell(e) {
+    rightBtn(e) {
+      // e.preventDefault();
       console.log("e = " + e);
-      console.log("e.clientX = " + e.clientX);
-      console.log("e.clientY = " + e.clientY);
-      // var el = e.currentTarget;
-      var el = e.target;
-      console.log("el = " + el);
-      console.log("el.dataset = " + el.dataset);
-      console.log("el.dataset.row = " + el.dataset.row);
-      console.log("el.dataset.column = " + el.dataset.column);
+      // console.log("e.clientX = " + e.clientX);
+      // console.log("e.clientY = " + e.clientY);
+      // // var el = e.currentTarget;
+      // var el = e.target;
+      // console.log("el = " + el);
+      // console.log("el.dataset = " + el.dataset);
+      // console.log("el.dataset.row = " + el.dataset.row);
+      // console.log("el.dataset.column = " + el.dataset.column);
     },
     handleMouse(e) {
       if (e.button == 0) {
@@ -421,24 +394,74 @@ export default {
         console.log("滚轮释放");
       } else if (e.button == 2) {
         console.log("右键释放");
+        console.log("this.mouse2Down = " + this.mouse2Down);
+        this.mouse2Down = false;
       }
     },
     handleMouseown(e) {
       if (e.button == 0) {
         console.log("左键按下");
+
       } else if (e.button == 1) {
         console.log("滚轮按下");
       } else if (e.button == 2) {
         console.log("右键按下");
+        console.log("this.mouse2Down = " + this.mouse2Down);
+        this.mouse2Down = true;
+
+      }
+    },
+    array2DHas2D(a2D, a1D) {
+      for (var el of a2D) {
+        if (el.length === a1D.length) {
+          for (var index in el) {
+            if (el[index] !== a1D[index]) {
+              break;
+            }
+            if (index == (el.length - 1)) {
+              return true;
+            }
+          }
+        }
       }
     },
     handleMouseOver(e) {
+      var el = e.target;
+      console.log("e.button = " + e.button);
+      // console.log("el.dataset = " + el.dataset);
+      // console.log("el.dataset.row = " + el.dataset.row);
+      // console.log("el.dataset.column = " + el.dataset.column);
+
       if (e.button == 0) {
-        console.log("左键覆盖移动");
+        console.log("\n左键覆盖移动");
+        console.log("this.mouse2Down = " + this.mouse2Down);
+        console.log("this.addCellD = " + this.addCellD);
+        console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+
+        if (this.mouse2Down && this.group != '') {
+          console.log("进入");
+          var addL = [el.dataset.row, el.dataset.column]
+          console.log("addL = " + addL);
+
+          if (this.group in this.addCellD) {
+            console.log("key has");
+            if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
+              console.log("new + " + addL);
+              this.addCellD[this.group].push(addL)
+            }
+          } else {
+            console.log("添加");
+            this.addCellD[this.group] = []
+          }
+
+
+        }
+
       } else if (e.button == 1) {
         console.log("滚轮覆盖移动");
       } else if (e.button == 2) {
         console.log("右键覆盖移动");
+
       }
     },
 
