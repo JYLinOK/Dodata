@@ -562,7 +562,7 @@ export default {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "dadata.json";
+      a.download = "dodata.json";
       a.click();
       URL.revokeObjectURL(url);
     }
