@@ -202,7 +202,7 @@ import UploadFile from './components/UploadFile/index.vue'
       &nbsp;&nbsp;&nbsp;&nbsp;
       <el-button type="danger" :icon="Crop" circle @click="resetAllBG" />
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <el-button type="primary" plain>Save</el-button>
+      <el-button type="primary" @click="saveData" plain>Save</el-button>
     </span>
 
     <div class="blockBox" :id="nameIDBlock(block)" v-for="(block, i) in blocks" :style="{ background: blockColors[i] }"
@@ -555,6 +555,16 @@ export default {
       this.blocks.splice(i, 1);
       this.blockColors.splice(i, 1);
       this.resetAllBG();
+    },
+    saveData() {
+      const dataStr = JSON.stringify(this.addCellD);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "dadata.json";
+      a.click();
+      URL.revokeObjectURL(url);
     }
 
   }
