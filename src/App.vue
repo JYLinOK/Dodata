@@ -199,6 +199,10 @@ import UploadFile from './components/UploadFile/index.vue'
       block name = <el-input v-model="group" style="width: 100px" placeholder="BlockName" />
       &nbsp;&nbsp;&nbsp;&nbsp;
       color = <el-color-picker v-model="colorBG" />
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <el-button type="danger" :icon="Crop" circle @click="resetAllBG" />
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <el-button type="primary" plain>Save</el-button>
     </span>
 
     <div class="blockBox" :id="nameIDBlock(block)" v-for="(block, i) in blocks" :style="{ background: blockColors[i] }"
@@ -427,7 +431,7 @@ export default {
 
         if (this.mouse2Down && this.group != '') {
           console.log("右键单击添加");
-          // console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+          console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
           if (this.group in this.addCellD) {
             console.log("key has");
             if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
@@ -486,7 +490,7 @@ export default {
     },
     handleMouseOver(e) {
       var el = e.target;
-      console.log("e.button = " + e.button);
+      // console.log("e.button = " + e.button);
       // console.log("el.dataset = " + el.dataset);
       // console.log("el.dataset.row = " + el.dataset.row);
       // console.log("el.dataset.column = " + el.dataset.column);
@@ -532,18 +536,24 @@ export default {
     handleBtnAddBlock() {
       this.blocks.push(this.group);
       this.blockColors.push(this.colorBG);
+
+      console.log("this.colorBG = " + this.colorBG)
+      console.log("this.blockColors = " + this.blockColors)
+
     },
     resetGroup(i) {
       console.log("reset i = " + i)
       console.log("reset this.group = " + this.group)
-      // delete this.addCellD[this.group]
+      delete this.addCellD[this.group]
       this.resetAllBG();
     },
     deleteGroup(i) {
       console.log("delete i = " + i)
       console.log("delete this.group = " + this.group)
-      delete this.addCellD[this.group]
+      console.log("delete this.blocks[i] = " + this.blocks[i])
+      delete this.addCellD[this.blocks[i]]
       this.blocks.splice(i, 1);
+      this.blockColors.splice(i, 1);
       this.resetAllBG();
     }
 
