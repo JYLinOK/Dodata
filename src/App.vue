@@ -203,8 +203,12 @@ import UploadFile from './components/UploadFile/index.vue'
 
     <div class="blockBox" :id="nameIDBlock(block)" v-for="(block, i) in blocks" :style="{ background: blockColors[i] }"
       :key="block">
-      block name = {{ blocks[i] }} &nbsp;&nbsp;&nbsp; color = {{ blockColors[i] }} &nbsp;&nbsp;&nbsp; data = {{
-        addCellD[blocks[i]] }}
+      <span>
+        <el-button type="danger" :icon="Delete" circle @click="deleteGroup(i)" />&nbsp;
+        <el-button type="danger" :icon="Crop" circle @click="resetGroup(i)" />&nbsp;
+        block name = {{ blocks[i] }} &nbsp;&nbsp;&nbsp; color = {{ blockColors[i] }} &nbsp;&nbsp;&nbsp; data = {{
+          addCellD[blocks[i]] }}
+      </span>
     </div>
 
 
@@ -245,6 +249,10 @@ import UploadFile from './components/UploadFile/index.vue'
 
 <script>
 import { ref } from 'vue'
+import {
+  Delete,
+  Crop
+} from '@element-plus/icons-vue'
 
 export default {
   components: {
@@ -516,6 +524,17 @@ export default {
     handleBtnAddBlock() {
       this.blocks.push(this.group);
       this.blockColors.push(this.colorBG);
+    },
+    resetGroup(i) {
+      console.log("reset i = " + i)
+      console.log("reset this.group = " + this.group)
+      delete this.addCellD[this.group]
+    },
+    deleteGroup(i) {
+      console.log("delete i = " + i)
+      console.log("delete this.group = " + this.group)
+      delete this.addCellD[this.group]
+      this.blocks.splice(i, 1);
     }
 
   }
