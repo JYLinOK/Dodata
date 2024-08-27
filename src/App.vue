@@ -403,7 +403,7 @@ export default {
       var addL = [el.dataset.row, el.dataset.column]
       if (e.button == 0) {
         console.log("左键按下");
-        console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+        // console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
         if (!this.mouse2Down) {
           console.log("addL = " + addL);
           for (var group in this.addCellD) {
@@ -427,7 +427,7 @@ export default {
 
         if (this.mouse2Down && this.group != '') {
           console.log("右键单击添加");
-          console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+          // console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
           if (this.group in this.addCellD) {
             console.log("key has");
             if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
@@ -476,6 +476,14 @@ export default {
       var div = document.getElementById(id);
       div.style.backgroundColor = this.colorBGPre;
     },
+    resetAllBG() {
+      for (let r = 0; r < this.gridNumW; r++) {
+        for (let c = 0; c < this.gridNumH; c++) {
+          // this.resetBG(r, c)
+          this.resetBG(c, r)
+        }
+      }
+    },
     handleMouseOver(e) {
       var el = e.target;
       console.log("e.button = " + e.button);
@@ -491,7 +499,7 @@ export default {
 
         if (this.mouse2Down && this.group != '') {
           console.log("右键拖动添加");
-          console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+          // console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
           var addL = [el.dataset.row, el.dataset.column]
           // console.log("addL = " + addL);
           if (this.group in this.addCellD) {
@@ -528,13 +536,15 @@ export default {
     resetGroup(i) {
       console.log("reset i = " + i)
       console.log("reset this.group = " + this.group)
-      delete this.addCellD[this.group]
+      // delete this.addCellD[this.group]
+      this.resetAllBG();
     },
     deleteGroup(i) {
       console.log("delete i = " + i)
       console.log("delete this.group = " + this.group)
       delete this.addCellD[this.group]
       this.blocks.splice(i, 1);
+      this.resetAllBG();
     }
 
   }
