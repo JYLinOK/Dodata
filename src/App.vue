@@ -402,6 +402,21 @@ export default {
         this.mouse2Down = false;
       }
     },
+    isIn1DL(cell, L) {
+      const exists = L.some(el => el === cell);
+      return exists
+    },
+    isInDict(cell, Dict) {
+      var has = false
+      for (const [key, L] of Object.entries(Dict)) {
+        console.log(`Key: ${key}, List: ${L}`);
+        if (this.is1DLIn2DL(cell, L)) {
+          has = true
+          break
+        }
+      }
+      return has
+    },
     handleMouseown(e) {
       var el = e.target;
       var addL = [el.dataset.row, el.dataset.column]
@@ -411,7 +426,7 @@ export default {
         if (!this.mouse2Down) {
           console.log("addL = " + addL);
           for (var group in this.addCellD) {
-            if (this.array2DHas2D(this.addCellD[group], addL)) {
+            if (this.is1DLIn2DL(addL, this.addCellD[group])) {
               const index = this.getA1DIdxInA2D(this.addCellD[group], addL);
               console.log("index = " + index);
               if (index !== -1) {
@@ -431,13 +446,17 @@ export default {
 
         if (this.mouse2Down && this.group != '') {
           console.log("右键单击添加");
-          console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
+          // console.log("this.addCellD[this.group] = " + this.addCellD[this.group]);
           if (this.group in this.addCellD) {
             console.log("key has");
-            if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
+            if (!this.is1DLIn2DL(addL, this.addCellD[this.group])) {
               console.log("new + " + addL);
-              this.addCellD[this.group].push(addL)
-              this.changeBG(el.dataset.row, el.dataset.column)
+              var has = this.isInDict(addL, this.addCellD)
+              // console.log("has = " + has);
+              if (!has) {
+                this.addCellD[this.group].push(addL)
+                this.changeBG(el.dataset.row, el.dataset.column)
+              }
             }
           } else {
             // console.log("添加");
@@ -446,7 +465,7 @@ export default {
         }
       }
     },
-    array2DHas2D(a2D, a1D) {
+    is1DLIn2DL(a1D, a2D) {
       for (var el of a2D) {
         if (el.length === a1D.length) {
           for (var index in el) {
@@ -508,10 +527,14 @@ export default {
           // console.log("addL = " + addL);
           if (this.group in this.addCellD) {
             console.log("key has");
-            if (!this.array2DHas2D(this.addCellD[this.group], addL)) {
+            if (!this.is1DLIn2DL(this.addCellD[this.group], addL)) {
               console.log("new + " + addL);
-              this.addCellD[this.group].push(addL)
-              this.changeBG(el.dataset.row, el.dataset.column)
+              var has = this.isInDict(addL, this.addCellD)
+              // console.log("has = " + has);
+              if (!has) {
+                this.addCellD[this.group].push(addL)
+                this.changeBG(el.dataset.row, el.dataset.column)
+              }
             }
           } else {
             console.log("新建添加");
@@ -696,9 +719,12 @@ hr {
 }
 
 .blockBox {
+  height: 100px;
   background: rgb(222, 222, 233);
   margin-top: 10px;
   padding: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 /* ================================= */
